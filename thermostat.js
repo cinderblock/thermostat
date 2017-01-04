@@ -21,6 +21,7 @@ function setHeaterOff() {
 }
 
 sensor.isDriverLoaded((err, isLoaded) => {
+  console.log(err);
   if (!isLoaded) {
     console.log('Driver not loaded');
     return;
