@@ -34,11 +34,12 @@ sensor.isDriverLoaded((err, isLoaded) => {
     sensor.getAll((err, tempObj) => {
       var sum = 0;
       var len = 0;
-      tempObj.forEach(obj => {
-        console.log(obj);
-        sum += obj;
+
+      for (var obj in tempObj) {
+        console.log(tempObj[obj]);
+        sum += tempObj[obj];
         len++;
-      });
+      }
 
       var average = sum / len;
 
