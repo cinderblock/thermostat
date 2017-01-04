@@ -27,6 +27,7 @@ sensor.isDriverLoaded((err, isLoaded) => {
     return;
   }
   sensor.list((err, listOfDeviceIds) => {
+    console.log('Found devices:');
     console.log(listOfDeviceIds);
   });
   setInterval(() => {
