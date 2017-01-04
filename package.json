@@ -1,0 +1,25 @@
+{
+  "name": "thermostat",
+  "version": "0.0.0",
+  "description": "A simple node thermostat app for NTC's CHIP",
+  "main": "thermostat.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cinderblock/thermostat.git"
+  },
+  "keywords": [
+    "chip",
+    "thermostat",
+    "gpio",
+    "temperature"
+  ],
+  "author": "Cameron Tacklind <cameron@tacklind.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cinderblock/thermostat/issues"
+  },
+  "homepage": "https://github.com/cinderblock/thermostat#readme"
+}
