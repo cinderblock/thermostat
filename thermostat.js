@@ -1,6 +1,6 @@
 import cli from 'cli';
 import {Gpio} from 'chip-gpio';
-import temp from 'ds18x20';
+import sensor from 'ds18x20';
 
 var options = cli.parse();
 
