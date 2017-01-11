@@ -16,7 +16,7 @@ module.exports = {
         a.count++;
       }
       return a;
-    });
+    }, 0);
 
     const average = reduced.sum / reduced.count;
 
