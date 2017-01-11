@@ -1,7 +1,6 @@
 const cli = require('cli');
 const Gpio = require('chip-gpio').Gpio;
-const sensor = require('ds18x20');
-const denodeify = require('denodeify');
+const sensor = require('./ds18x20-promise.js');
 
 var options = cli.parse();
 
