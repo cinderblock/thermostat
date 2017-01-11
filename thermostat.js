@@ -1,67 +1,48 @@
 const cli = require('cli');
 const Gpio = require('chip-gpio').Gpio;
-const sensor = require('./ds18x20-promise.js');
+const sensor = require('./ds18x20-async.js');
 
 var options = cli.parse();
 
 var interval = 2000;
 var threshold = 25;
 
+const degC = '\u00B0C';
+
 var heater = new Gpio(0, 'out');
 
 function setHeater(on) {
+  const targetState = on ? 0 : 1;
+  if (heater.read() == targetState) return;
   console.log('Heater:', on ? 'on' : 'off');
-  heater.write(on ? 0 : 1);
-}
-function setHeaterOn() {
-  setHeater(true);
-}
-function setHeaterOff() {
-  setHeater(false);
+  heater.write(targetState);
 }
 
-var listSensors = denodeify(sensor.list.bind(sensor));
+async function doThermostat() {
+  var temps = await sensor.getTemperatures();
 
-async function getTemperatures() {
+  if (temps.reduced.count == 0) {
+    console.log('No temperatures read');
+    return;
+  }
 
-  return new Promise((sensor.list((err, idList) => {
-    if (err) {
-      return callback(err);
-    }
-    that.get(idList, (err, result) => {
-    });
-  });
-
-
-  sensor.getAll((err, tempObj) => {
-    var sum = 0;
-    var len = 0;
-
-    for (var obj in tempObj) {
-      console.log(tempObj[obj]);
-      sum += tempObj[obj];
-      len++;
-    }
-
-    var average = sum / len;
-
-    console.log(average);
-
-    setHeater(average < threshold);
-  });
+  console.log(temps.average, degC, temps.temps.map(t => t === false ? t : t + ' ' + degC));
+  setHeater(temps.average < threshold);
 }
 
-sensor.isDriverLoaded((err, isLoaded) => {
-  console.log(err);
+(async function main() {
+  var isLoaded = await sensor.isDriverLoaded();
   if (!isLoaded) {
     console.log('Driver not loaded');
     return;
   }
-  sensor.list((err, listOfDeviceIds) => {
-    console.log('Found devices:');
-    console.log(listOfDeviceIds);
-  });
-  setInterval(() => {
-    ;
+
+  var listOfDeviceIds = await sensor.list();
+
+  console.log('Found devices:');
+  console.log(listOfDeviceIds);
+
+  setInterval(async () => {
+    await doThermostat();
   }, interval);
-});
+})();
