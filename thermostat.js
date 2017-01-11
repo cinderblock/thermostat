@@ -1,6 +1,7 @@
 import cli from 'cli';
 import {Gpio} from 'chip-gpio';
 import sensor from 'ds18x20';
+const denodeify = require('denodeify');
 
 var options = cli.parse();
 
