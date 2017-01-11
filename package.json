@@ -4,7 +4,7 @@
   "description": "A simple node thermostat app for NTC's CHIP",
   "main": "thermostat.js",
   "scripts": {
-    "start": "node ."
+    "start": "node --harmony ."
   },
   "repository": {
     "type": "git",
