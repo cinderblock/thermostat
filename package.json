@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/cinderblock/thermostat#readme",
   "dependencies": {
-    "chip-gpio": "^1.1.0",
+    "chip-gpio": "^1.1.1",
     "cli": "^1.0.1",
     "denodeify": "^1.2.1",
     "ds18x20": "^0.2.0"
