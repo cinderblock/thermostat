@@ -6,16 +6,24 @@ var options = cli.parse();
 
 var interval = 2000;
 var threshold = 25;
+var hysteresis = .1;
 
 const degC = '\u00B0C';
 
 var heater = new Gpio(0, 'out');
 
+function getHeater() {
+  return heater.read() == 0;
+}
+
 function setHeater(on) {
-  const targetState = on ? 0 : 1;
-  if (heater.read() == targetState) return;
+  if (getHeater() == on) return;
   console.log('Heater:', on ? 'on' : 'off');
-  heater.write(targetState);
+  heater.write(on ? 0 : 1);
+}
+
+function negateIf(num, neg) {
+  return neg ? -num : num;
 }
 
 async function doThermostat() {
@@ -27,7 +35,8 @@ async function doThermostat() {
   }
 
   console.log(temps.average, degC, temps.temps.map(t => t === false ? t : t + ' ' + degC));
-  setHeater(temps.average < threshold);
+
+  setHeater(temps.average < threshold - negateIf(hysteresis / 2, getHeater()));
 }
 
 (async function main() {
