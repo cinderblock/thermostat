@@ -51,7 +51,11 @@ async function doThermostat() {
   console.log('Found devices:');
   console.log(listOfDeviceIds);
 
+  var running = 0;
   setInterval(async () => {
+    if (running > 0) return;
+    running++;
     await doThermostat();
+    running--;
   }, interval);
 })();
