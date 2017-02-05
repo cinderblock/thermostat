@@ -1,12 +1,25 @@
 const cli = require('cli');
 const Gpio = require('chip-gpio').Gpio;
 const sensor = require('./ds18x20-async.js');
+const express = require('express');
+
+const app = express();
 
 var options = cli.parse();
 
 var interval = 2000;
 var threshold = 25;
 var hysteresis = .1;
+var temperature = false;
+
+app.get('/:temp?', (req, res) => {
+  res.send('' + temperature);
+  var temp = parseFloat(req.params.temp);
+  if (isNaN(temp)) return;
+  console.log('Threshold set:', threshold = temp);
+});
+
+app.listen(80);
 
 const degC = '\u00B0C';
 
@@ -34,7 +47,7 @@ async function doThermostat() {
     return;
   }
 
-  console.log(temps.average, degC, temps.temps.map(t => t === false ? t : t + ' ' + degC));
+  console.log(temperature = temps.average, degC, temps.temps.map(t => t === false ? t : t + ' ' + degC));
 
   setHeater(temps.average < threshold - negateIf(hysteresis / 2, getHeater()));
 }
