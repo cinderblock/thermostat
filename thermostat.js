@@ -13,7 +13,7 @@ var options = cli.parse();
 var interval = 2000;
 
 // Threshold temperature for turning the heater on
-var threshold = new Program(25);
+var threshold = new Program(21.3);
 
 // Hysteresis on threshold
 // When heater is on, threshold is increased by half of this amount.
