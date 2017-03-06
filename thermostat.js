@@ -2,6 +2,7 @@ const cli = require('cli');
 const Gpio = require('chip-gpio').Gpio;
 const sensor = require('./ds18x20-async.js');
 const express = require('express');
+const Program = require('./Program.js');
 
 const app = express();
 
@@ -12,7 +13,7 @@ var options = cli.parse();
 var interval = 2000;
 
 // Threshold temperature for turning the heater on
-var threshold = 25;
+var threshold = new Program(25);
 
 // Hysteresis on threshold
 // When heater is on, threshold is increased by half of this amount.
@@ -33,7 +34,7 @@ app.get('/:temp?', (req, res) => {
   // praseFloat returns NaN if string was not parseable
   if (isNaN(temp)) return;
   // Update default threshold
-  console.log('Threshold set:', threshold = temp);
+  console.log('Threshold set:', threshold.setDefaultThreshold(temp));
 });
 
 // Listen on port 80. We're assuming we're run as root, for now.
@@ -90,7 +91,7 @@ async function doThermostat() {
   console.log(temperature = temps.average, degC, temps.temps.map(t => t === false ? t : t + ' ' + degC));
 
   // Set the output to the desired state
-  setHeater(temps.average < threshold - negateIf(hysteresis / 2, getHeater()));
+  setHeater(temps.average < threshold.getCurrentThreshold() - negateIf(hysteresis / 2, getHeater()));
 }
 
 /**
