@@ -24,6 +24,28 @@ var hysteresis = .1;
 var temperature = false;
 
 /**
+ * Extract just the time component, in local timezone, in 24-hour format, from a Date
+ */
+function getTime(date) {
+  return (new Date(date)).toLocaleTimeString('en-US', {hour12: false});
+}
+
+var nightEnd = '07:30:00';
+var nightStart = '21:00:00';
+var nightThreshold = 17;
+
+/**
+ * Threshold function for thermostat program
+ * If not night, return undefined
+ */
+function nightThreshold() {
+  var time = getTime();
+  if (time < nightEnd || time > nightStart) {
+    return nightThreshold;
+  }
+}
+
+/**
  * Simple HTTP endpoint for setting a new temperature value
  */
 app.get('/:temp?', (req, res) => {
