@@ -15,6 +15,8 @@ var interval = 2000;
 var threshold = 25;
 
 // Hysteresis on threshold
+// When heater is on, threshold is increased by half of this amount.
+// When heater is off, threshold is reduced by half this amount.
 var hysteresis = .1;
 
 // Most recent temperature reading
@@ -24,9 +26,13 @@ var temperature = false;
  * Simple HTTP endpoint for setting a new temperature value
  */
 app.get('/:temp?', (req, res) => {
+  // Make sure `temperature` is a string before `send()` uses it
   res.send('' + temperature);
+  // Parse target temperature
   var temp = parseFloat(req.params.temp);
+  // praseFloat returns NaN if string was not parseable
   if (isNaN(temp)) return;
+  // Update default threshold
   console.log('Threshold set:', threshold = temp);
 });
 
