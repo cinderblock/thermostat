@@ -109,11 +109,14 @@ async function doThermostat() {
     return;
   }
 
+  // Record average temperature
+  temperature = temps.average;
+
   // Print valid temperature readings. Record average temperature
-  console.log(temperature = temps.average, degC, temps.temps.map(t => t === false ? t : t + ' ' + degC));
+  console.log(temperature.toFixed(2) + degC, '/', threshold.getCurrentThreshold().toFixed(2) + degC, temps.temps.map(t => t === false ? t : t.toFixed(1) + degC));
 
   // Set the output to the desired state
-  setHeater(temps.average < threshold.getCurrentThreshold() - negateIf(hysteresis / 2, getHeater()));
+  setHeater(temperature < threshold.getCurrentThreshold() - negateIf(hysteresis / 2, getHeater()));
 }
 
 /**
