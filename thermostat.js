@@ -49,14 +49,14 @@ function nightThreshold() {
  * Simple HTTP endpoint for setting a new temperature value
  */
 app.get('/:temp?', (req, res) => {
-  // Make sure `temperature` is a string before `send()` uses it
-  res.send('' + temperature);
   // Parse target temperature
   var temp = parseFloat(req.params.temp);
   // praseFloat returns NaN if string was not parseable
-  if (isNaN(temp)) return;
-  // Update default threshold
-  console.log('Threshold set:', threshold.setDefaultThreshold(temp));
+  if (!isNaN(temp)) {
+    // Update default threshold
+    console.log('Threshold set:', threshold.setDefaultThreshold(temp));
+  }
+  res.send('<pre>' + JSON.stringify({temperature, threshold: threshold.getCurrentThreshold()}) + '</pre>');
 });
 
 // Listen on port 80. We're assuming we're run as root, for now.
