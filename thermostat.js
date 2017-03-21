@@ -56,7 +56,7 @@ app.get('/:temp?', (req, res) => {
     // Update default threshold
     console.log('Threshold set:', threshold.setDefaultThreshold(temp));
   }
-  res.send('<pre>' + JSON.stringify({temperature, threshold: threshold.getCurrentThreshold()}) + '</pre>');
+  res.send('<pre>' + JSON.stringify({temperature, threshold: threshold.getCurrentThreshold()}) + '</pre>Add a number to the URL to set the threshold in '+degC+'. Like this: <a href="/21.2">http://nacho/21.2</a>');
 });
 
 // Listen on port 80. We're assuming we're run as root, for now.
